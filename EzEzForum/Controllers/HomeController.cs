@@ -22,11 +22,7 @@ namespace EzEzForum.Controllers {
         /*
         public IActionResult Index() {
             int page = 1;
-            PagingInfo = new PagingInfo {
-                CurrentPage = page,
-                ItemsPerPage = PageSize,
-                TotalItems = threadRepository.Threads.Count()
-            }
+            PagingInfo = new PagingInfo { 
            return View(threadRepository.Threads
                .OrderBy(p => p.DateTimeCreated)
                .Skip((page - 1) * PageSize)
