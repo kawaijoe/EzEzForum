@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using EzEzForum.Models
+@model ThreadsListViewModel
+
+<div class="row">
+    <div class="col-md-8">
+        <h1>Threads</h1>
+    </div>
+    <div class="col-md-4">
+        <form class="form-inline" style="padding-top:20px;">
+            <div class="form-group">
+                <input type="text" class="form-control" id="exampleInputName2" placeholder="Search Tags">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+        </form>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <tr>
+        <th>ID</th>
+        <th>Thread</th>
+        <th>Hits</th>
+        <th>Original Poster</th>
+        <th>Date Created</th>
+    </tr>
+    @foreach (var p in Model.Threads) {
+        <tr>
+            <th>@p.ThreadID</th>
+            <th>@p.Title</th>
+            <th>@p.ThreadHits</th>
+            <th>@p.ThreadHits</th>
+            <th>@p.DateTimeCreated</th>
+        </tr>
+    }
+</table>
+
+<!--<div page-model="@Model.PagingInfo" page-action="Home"></div>-->
+<div page-model="@Model.PagingInfo"></div>

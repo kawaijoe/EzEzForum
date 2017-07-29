@@ -1,0 +1,9 @@
+D:\Projects\School\EzEzForum\EzEzForum\bin\Debug\netcoreapp1.1\EzEzForum.deps.json
+D:\Projects\School\EzEzForum\EzEzForum\bin\Debug\netcoreapp1.1\EzEzForum.runtimeconfig.json
+D:\Projects\School\EzEzForum\EzEzForum\bin\Debug\netcoreapp1.1\EzEzForum.runtimeconfig.dev.json
+D:\Projects\School\EzEzForum\EzEzForum\bin\Debug\netcoreapp1.1\EzEzForum.dll
+D:\Projects\School\EzEzForum\EzEzForum\bin\Debug\netcoreapp1.1\EzEzForum.pdb
+D:\Projects\School\EzEzForum\EzEzForum\obj\Debug\netcoreapp1.1\EzEzForum.AssemblyInfo.cs
+D:\Projects\School\EzEzForum\EzEzForum\obj\Debug\netcoreapp1.1\EzEzForum.dll
+D:\Projects\School\EzEzForum\EzEzForum\obj\Debug\netcoreapp1.1\EzEzForum.pdb
+D:\Projects\School\EzEzForum\EzEzForum\obj\Debug\netcoreapp1.1\EzEzForum.csprojResolveAssemblyReference.cache
