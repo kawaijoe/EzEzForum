@@ -3,7 +3,6 @@
 }
 
 @using EzEzForum.Models
-@model ThreadsListViewModel
 
 <div class="row">
     <div class="col-md-8">
@@ -27,16 +26,13 @@
         <th>Original Poster</th>
         <th>Date Created</th>
     </tr>
-    @foreach (var p in Model.Threads) {
+    @foreach (var p in Model) {
         <tr>
-            <th>@p.ThreadID</th>
+            <th>@p.ThreadId</th>
             <th>@p.Title</th>
             <th>@p.ThreadHits</th>
-            <th></th>
+            <th>@p.Member.Email</th>
             <th>@p.DateTimeCreated</th>
         </tr>
     }
 </table>
-
-<!--<div page-model="@Model.PagingInfo" page-action="Home"></div>-->
-<div page-model="@Model.PagingInfo"></div>
