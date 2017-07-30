@@ -1,0 +1,45 @@
+﻿@{
+}
+
+@using EzEzForum.Models
+@model List<Message>
+
+<div class="row">
+    <h1>@ViewBag.Title</h1>
+    <a href="/Home/ViewProfile?id=@ViewBag.OPId">@ViewBag.OPEmail</a>
+    @ViewBag.DateTimeCreated
+    <div class="well well-lg">
+        @ViewBag.Msg
+    </div>
+</div>
+
+@foreach (var p in Model) {
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <a href="/Home/ViewProfile?id=@p.MemberId">@p.Member.Email</a>
+            <br />
+            @p.DateTimeCreated
+        </div>
+        <div class="panel-footer">
+            @p.Msg
+        </div>
+    </div>
+}
+
+@if (ViewBag.auth) {
+
+    <form action="/Home/ViewThreadPost" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label for="exampleInputEmail1">Post Message:</label>
+            <input type="text" class="form-control" name="Msg" placeholder="Enter your message here..">
+        </div>
+
+        <input type="hidden" name="MemberId" value="@ViewBag.MemberId">
+        <input type="hidden" name="ThreadId" value="@ViewBag.ThreadId">
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+}
+

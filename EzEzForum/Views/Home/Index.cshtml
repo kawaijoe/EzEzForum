@@ -3,15 +3,16 @@
 }
 
 @using EzEzForum.Models
+@model List<Thread>
 
 <div class="row">
     <div class="col-md-8">
         <h1>Threads</h1>
     </div>
     <div class="col-md-4">
-        <form class="form-inline" style="padding-top:20px;">
+        <form action="/Home/index" method="get" class="form-inline" style="padding-top:20px;">
             <div class="form-group">
-                <input type="text" class="form-control" id="exampleInputName2" placeholder="Search Tags">
+                <input type="text" class="form-control" name="search" placeholder="Search Tags">
             </div>
             <button type="submit" class="btn btn-default">Search</button>
         </form>
@@ -29,9 +30,9 @@
     @foreach (var p in Model) {
         <tr>
             <th>@p.ThreadId</th>
-            <th>@p.Title</th>
+            <th><a href="/Home/ViewThread?id=@p.ThreadId">@p.Title</a></th>
             <th>@p.ThreadHits</th>
-            <th>@p.Member.Email</th>
+            <th><a href="/Home/ViewProfile?id=@p.MemberId">@p.Member.Email</a></th>
             <th>@p.DateTimeCreated</th>
         </tr>
     }

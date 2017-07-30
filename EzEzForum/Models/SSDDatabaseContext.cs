@@ -13,11 +13,12 @@ namespace EzEzForum.Models
         public virtual DbSet<ReportedMember> ReportedMember { get; set; }
         public virtual DbSet<Tag> Tag { get; set; }
         public virtual DbSet<Thread> Thread { get; set; }
+        public object Messages { get; internal set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Data Source=139.59.119.31;Initial Catalog=SSDDatabase;User ID=sa;Password=yourStrong(!)Password;");
+            optionsBuilder.UseSqlServer(@"Data Source=139.59.119.31;Initial Catalog=SSDDatabase1;User ID=sa;Password=yourStrong(!)Password;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

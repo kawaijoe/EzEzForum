@@ -25,13 +25,10 @@ namespace EzEzForum {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:SSDDatabase:ConnectionString"]));
-            //services.AddTransient<IMemberRepository, StubRepository>();
-            
-            //services.AddTransient<IMemberRepository, EFMemberRepository>();
-            //services.AddTransient<IThreadRepository, EFThreadRepository>();
             // Add framework services.
             services.AddMvc();
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +44,8 @@ namespace EzEzForum {
             }
 
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseMvc(routes => {
                 routes.MapRoute(
