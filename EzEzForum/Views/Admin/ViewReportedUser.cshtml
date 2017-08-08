@@ -1,0 +1,25 @@
+
+@{
+    ViewData["Title"] = "ViewReportedUser";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<ReportedMember>
+
+    <h1>View Reported User</h1>
+
+    <table class="table table-hover">
+        <tr>
+            <th>Email</th>
+            <th>DateTime Reported</th>
+            <th>Reported By</th>
+            <th>Reason</th>
+        </tr>
+        @foreach (var p in Model) {
+            <tr>
+                <th><a href="/Home/ViewProfile?id=@p.MemberId">@p.Member.Email</a></th>
+                <th>@p.DateTimeReported</th>
+                <th>@p.ReportedBy</th>
+                <th>@p.ReasonForReport</th>
+            </tr>
+        }
+    </table>

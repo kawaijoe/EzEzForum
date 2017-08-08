@@ -1,7 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    if (Authentication.isAdmin(@ViewBag.HttpContext)) {
+        Layout = "_AdminLayout";
+    } else if (Authentication.isUser(@ViewBag.HttpContext)) {
+        Layout = "_MemberLayout";
+    }
 }
-
+@using EzEzForum.Infrastructure
 @using EzEzForum.Models
 @model List<Thread>
 

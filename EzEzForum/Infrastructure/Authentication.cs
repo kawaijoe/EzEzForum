@@ -21,6 +21,10 @@ namespace EzEzForum.Infrastructure {
             httpcontext.Session.SetInt32(MEMBERID, member.MemberId);
         }
 
+        public static int getMemberId(HttpContext httpcontext) {
+            return (int)httpcontext.Session.GetInt32(MEMBERID);
+        }
+
         public static bool isUser(HttpContext httpcontext) {
             return httpcontext.Session.GetString(ROLE) == "M";
         }

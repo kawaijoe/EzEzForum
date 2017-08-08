@@ -34,14 +34,20 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="CreateThread">Create Thread</a></li>
+                    <li><a asp-area="" asp-controller="Member" asp-action="CreateThread">Create Thread</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a asp-area="" asp-controller="Home" asp-action="ViewReportedUser">View Reported User</a>
+                        <a asp-area="" asp-controller="Admin" asp-action="ViewUser">View User</a>
                     </li>
                     <li>
-                        <a asp-area="" asp-controller="Home" asp-action="ViewUser">View User</a>
+                        <a asp-area="" asp-controller="Admin" asp-action="ViewBannedUser">View Banned User</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Admin" asp-action="ViewReportedUser">View Reported User</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Admin" asp-action="BanUser">Ban User</a>
                     </li>
                     <li>
                         <a asp-area="" asp-controller="Home" asp-action="ViewProfile">View Profile</a>

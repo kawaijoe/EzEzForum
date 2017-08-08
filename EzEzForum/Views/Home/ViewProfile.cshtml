@@ -1,16 +1,34 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    Layout = "~/Views/Shared/_MemberLayout.cshtml";
+﻿@{
+    ViewData["Title"] = "Home Page";
+    if (Authentication.isAdmin(@ViewBag.HttpContext)) {
+        Layout = "_AdminLayout";
+    } else if (Authentication.isUser(@ViewBag.HttpContext)) {
+        Layout = "_MemberLayout";
+    }
 }
+@using EzEzForum.Infrastructure
 <h1>View Profile</h1>
 
 <h2>Email:</h2>
-<h3>admin@mail.com</h3>
+<h3>@ViewBag.Email</h3>
 
 <h2>Date Joined:</h2>
-<h3>2017-07-30 09:28:10.000</h3>
+<h3>@ViewBag.DateJoined</h3>
 
-<!-- Standard button -->
-<button type="button" class="btn btn-default">Report User</button>
+
+@if (ViewBag.auth) {
+
+    <form action="/Home/ViewProfilePost" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Report Reason:</label>
+            <input type="text" class="form-control" name="ReasonForReport" placeholder="">
+        </div>
+
+        <input type="hidden" name="ReportedBy" value="@ViewBag.ReportedBy">
+        <input type="hidden" name="MemberId" value="@ViewBag.MemberId">
+
+        <button type="submit" class="btn btn-default">Report User</button>
+    </form>
+}

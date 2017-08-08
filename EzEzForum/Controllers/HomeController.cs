@@ -8,6 +8,7 @@ using EzEzForum.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using EzEzForum.Infrastructure;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 
 namespace EzEzForum.Controllers {
     public class HomeController : Controller {
@@ -18,6 +19,8 @@ namespace EzEzForum.Controllers {
         public HomeController() { }
 
         public IActionResult Index(string search) {
+            ViewBag.HttpContext = HttpContext;
+
             List<Thread> list;
             if (search != null)
                 list = db.Thread
@@ -33,11 +36,9 @@ namespace EzEzForum.Controllers {
             return View(list);
         }
 
-        public IActionResult CreateThread() {
-            return View();
-        }
-
         public IActionResult ViewThread(int id) {
+            ViewBag.HttpContext = HttpContext;
+
             List<Message> list = db.Message
                 .Where(b => b.ThreadId == id)
                 .Include("Member")
@@ -62,8 +63,8 @@ namespace EzEzForum.Controllers {
             ViewBag.auth = false;
             if (Authentication.isLoggedon(HttpContext)) {
                 ViewBag.auth = true;
-                ViewBag.MemberId = HttpContext.Session.GetString(Authentication.MEMBERID);
-            } 
+                ViewBag.MemberId = Authentication.getMemberId(HttpContext);
+            }
 
             return View(list);
         }
@@ -71,8 +72,10 @@ namespace EzEzForum.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ViewThreadPost(Message message) {
+            ViewBag.HttpContext = HttpContext;
 
             if (message.MemberId != null && message.Msg != null) {
+                Debug.WriteLine("bebud");
                 message.DateTimeCreated = DateTime.Now;
                 db.Message.Add(message);
                 db.SaveChanges();
@@ -83,6 +86,7 @@ namespace EzEzForum.Controllers {
         }
 
         public IActionResult Login(bool hasfailed) {
+            ViewBag.HttpContext = HttpContext;
             if (Authentication.isLoggedon(HttpContext))
                 return new RedirectResult("Index");
 
@@ -93,11 +97,21 @@ namespace EzEzForum.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult LoginPost(string User, string Pass) {
+            ViewBag.HttpContext = HttpContext;
+
+            bool memberBanned = false;
+
             Member member = db.Member
                 .Where(b => b.Email == User)
                 .FirstOrDefault();
 
-            if (member != null && member.Pass == Pass) {
+            foreach (var bannedMember in db.BannedMember.ToList()) {
+                if (bannedMember.MemberId == member.MemberId) {
+                    memberBanned = true;
+                }
+            }
+
+            if (member != null && member.Pass == Pass && !memberBanned) {
                 Authentication.login(HttpContext, member);
                 return new RedirectResult("Index");
             }
@@ -106,6 +120,7 @@ namespace EzEzForum.Controllers {
         }
 
         public IActionResult Logout() {
+            ViewBag.HttpContext = HttpContext;
             if (Authentication.isLoggedon(HttpContext))
                 Authentication.logout(HttpContext);
 
@@ -113,6 +128,7 @@ namespace EzEzForum.Controllers {
         }
 
         public IActionResult Register(bool hasfailed) {
+            ViewBag.HttpContext = HttpContext;
             if (Authentication.isLoggedon(HttpContext))
                 return new RedirectResult("Index");
             ViewBag.failed = hasfailed;
@@ -122,8 +138,8 @@ namespace EzEzForum.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RegisterPost(string User, string Pass, string ConfirmPass) {
-
-            if (User != null && Pass != null && ConfirmPass != null && Pass == ConfirmPass && User.Contains("@")) {
+            ViewBag.HttpContext = HttpContext;
+            if (User != null && Pass != null && ConfirmPass != null && Pass == ConfirmPass && User.Contains("@") && emailExist(User)) {
 
                 db.Member.Add(new Member(){
                     Email = User,
@@ -138,8 +154,53 @@ namespace EzEzForum.Controllers {
             return new RedirectResult("Register?hasFailed=true");
         }
 
-        public IActionResult ViewProfile() {
+        private bool emailExist(string email) {
+            Member member = db.Member.Where(b => b.Email == email)
+                .FirstOrDefault();
+            if (member == null) return true;
+            return false;
+        }
+
+        public IActionResult ViewProfile(int id) {
+            ViewBag.HttpContext = HttpContext;
+
+            if (id == 0) {
+                id = Authentication.getMemberId(HttpContext);
+            }
+
+            Member member = db.Member
+                .Where(b => b.MemberId == id)
+                .FirstOrDefault();
+
+            ViewBag.Email = member.Email;
+            ViewBag.DateJoined = member.DateJoined;
+
+            // Auth
+            ViewBag.auth = false;
+            if (Authentication.isLoggedon(HttpContext)) {
+                Member memberReportedBy = db.Member
+                    .Where(b => b.MemberId == Authentication.getMemberId(HttpContext))
+                    .FirstOrDefault();
+
+                ViewBag.auth = true;
+                ViewBag.ReportedBy = memberReportedBy.Email;
+                ViewBag.MemberId = Authentication.getMemberId(HttpContext);
+            }
+
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ViewProfilePost(ReportedMember report) {
+            ViewBag.HttpContext = HttpContext;
+            Debug.WriteLine("bebud");
+            report.DateTimeReported = DateTime.Now;
+            db.ReportedMember.Add(report);
+            db.SaveChanges();
+
+            return new RedirectResult("Index");
+            //return RedirectToAction("ViewThread?id=" + message.ThreadId, "Home");
         }
 
         public IActionResult Error() {
